@@ -144,7 +144,7 @@ footer{color:var(--muted);text-align:center;font-size:.82rem;margin:18px 0}
  next.addEventListener('click',()=>showPage(current+1));
  function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’']/g,"'").replace(/[.!?,;:]/g,'').replace(/\s+/g,' ').trim();}
  function selected(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:'';}
- function grade(){
+ function oldGrade(){
    let score=0, items=[];
    const checks=[
     {title:'Aufgabe 1',ok:selected('q1')==='a',points:3,answer:'Je suis allé au cinéma hier.'},
@@ -176,6 +176,86 @@ footer{color:var(--muted);text-align:center;font-size:.82rem;margin:18px 0}
    });
    result.scrollIntoView({behavior:'smooth',block:'start'});
  }
+async function grade() {
+  const btn = document.getElementById('gradeBtn');
+  btn.disabled = true;
+  btn.textContent = 'KI korrigiert ...';
+
+  try {
+    const tasks = [
+      ['Ballerina Cappuccina (tomber) dans la neige.',
+       document.getElementById('q3').value,
+       'Ballerina Cappuccina est tombée dans la neige.'],
+      ['Übersetze: Wir haben den Bus genommen.',
+       document.getElementById('q4').value,
+       'Nous avons pris le bus.'],
+      ['Hier, ils ... (regarder) un film skibidi.',
+       document.getElementById('q5').value,
+       'Hier, ils ont regardé un film skibidi.'],
+      ['Schreibe zwei französische Sätze im passé composé über einen verfluchten Urlaub.',
+       document.getElementById('q6').value,
+       'Tralalero est allé à la plage. Il a mangé une pizza.']
+    ];
+
+    const answers = await Promise.all(tasks.map(async (t, i) => {
+      if (!t[1].trim()) {
+        return { score: 0, feedback: 'Keine Antwort eingegeben.',
+          correction: t[2], explanation: 'Du hast nichts eingegeben.' };
+      }
+
+      const res = await fetch(
+        'https://franzosen.lukasschroedinger2012.workers.dev',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            task: t[0],
+            answer: t[1],
+            expectedAnswer: t[2],
+            maxPoints: 3
+          })
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'KI-Fehler');
+      return data;
+    }));
+
+    const checks = [
+      { title: 'Aufgabe 1', ok: selected('q1') === 'a',
+        answer: 'Je suis allé au cinéma hier.' },
+      { title: 'Aufgabe 2', ok: selected('q2') === 'b',
+        answer: 'Nous avons pris le bus pour aller en ville.' }
+    ];
+
+    const safe = s => String(s || '').replace(/[&<>"']/g, c =>
+      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    const score = checks.reduce((n, c) => n + (c.ok ? 3 : 0), 0)
+      + answers.reduce((n, a) => n + Math.max(0, Math.min(3, Number(a.score) || 0)), 0);
+
+    result.innerHTML = '<h2>Dein Ergebnis</h2>' +
+      '<div class="score">' + score + ' / 18 Punkte</div>' +
+      checks.map(c => '<div class="review"><strong>' + c.title +
+        ': ' + (c.ok ? 'Richtig ✓ (3/3)' : 'Falsch (0/3)') +
+        '</strong><p>Lösung: ' + safe(c.answer) + '</p></div>').join('') +
+      answers.map((a, i) => '<div class="review"><strong>Aufgabe ' +
+        (i + 3) + ': ' + Math.max(0, Math.min(3, Number(a.score) || 0)) +
+        '/3 Punkte</strong><p>' + safe(a.feedback) +
+        '</p><p><strong>Korrektur:</strong> ' + safe(a.correction) +
+        '</p><p><strong>Erklärung:</strong> ' + safe(a.explanation) +
+        '</p></div>').join('');
+
+    result.style.display = 'block';
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    alert('KI-Fehler: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Arbeit korrigieren';
+  }
+}
  document.getElementById('gradeBtn').addEventListener('click',grade);
  showPage(0);
 })();
