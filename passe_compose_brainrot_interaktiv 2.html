@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passé composé – Brainrot-Klassenarbeit</title>
+<style>
+:root{--bg:#10111b;--panel:#191b2b;--panel2:#22243a;--text:#f5f5ff;--muted:#b9bbd4;--accent:#a78bfa;--accent2:#67e8f9;--good:#86efac;--bad:#fda4af}
+*{box-sizing:border-box}
+html{min-height:100%;background:#10111b}
+body{margin:0;background:radial-gradient(circle at top,#252044 0,#10111b 52%);background-color:#10111b;color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding:12px;overflow-y:auto}
+.wrap{width:100%;max-width:820px;margin:0 auto}
+header,.page,.result{background:rgba(25,27,43,.96);border:1px solid #343650;border-radius:20px;padding:22px;box-shadow:0 14px 40px #0003}
+header{margin-bottom:16px}
+h1{font-size:clamp(1.5rem,4vw,2.25rem);margin:0 0 8px}
+.subtitle{color:var(--muted);margin:0}
+.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;color:var(--muted);font-size:.92rem}
+.track{height:8px;background:#303149;border-radius:20px;overflow:hidden;margin-bottom:18px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
+.page{display:none;min-height:0}
+.page.active{display:block}
+.page.active{max-height:calc(100dvh - 210px);overflow-y:auto;overscroll-behavior:contain}
+h2{margin:0 0 8px;font-size:1.35rem}
+.prompt{color:var(--muted);margin:0 0 18px}
+.option{display:flex;gap:10px;align-items:flex-start;background:var(--panel2);border:1px solid #3a3d5c;border-radius:12px;padding:12px;margin:9px 0;cursor:pointer}
+.option:hover{border-color:var(--accent)}
+.option input{margin-top:4px;accent-color:var(--accent)}
+textarea,input[type=text]{width:100%;background:#111321;color:var(--text);border:1px solid #444763;border-radius:12px;padding:13px;font:inherit}
+textarea{min-height:95px;resize:vertical}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:18px}
+button{border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:750;cursor:pointer}
+button:disabled{opacity:.35;cursor:not-allowed}
+.primary{background:var(--accent);color:#171329}
+.secondary{background:#303149;color:var(--text)}
+.finish{background:var(--accent2);color:#10202a}
+.small{color:var(--muted);font-size:.9rem}
+.result{display:none;margin-top:16px}
+.result h2{margin-bottom:10px}
+.score{font-size:2rem;font-weight:850;margin:6px 0}
+.review{background:var(--panel2);padding:12px;border-radius:12px;margin:9px 0}
+.good{color:var(--good)}.bad{color:var(--bad)}
+footer{color:var(--muted);text-align:center;font-size:.82rem;margin:18px 0}
+@media(max-width:520px){
+ body{padding:8px}
+ header{padding:15px;margin-bottom:10px}
+ .page,.result{padding:15px}
+ .page.active{max-height:calc(100dvh - 185px)}
+ .nav{margin-top:10px}
+ .nav button{padding:11px 13px}
+ .option{padding:10px;margin:7px 0}
+ h2{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🇫🇷 Passé composé: Brainrot-Klassenarbeit</h1>
+  <p class="subtitle">Tralalero Tralala ist auf Klassenarbeits-Modus. Zeig, was du draufhast. 💀</p>
+</header>
+<div class="topline"><span id="pageLabel">Seite 1 von 5</span><span id="progressLabel">0 %</span></div>
+<div class="track"><div class="fill" id="progress"></div></div>
+
+<section class="page active" data-page="0">
+  <h2>Aufgabe 1 – Wähle die richtige Form</h2>
+  <p class="prompt">Je/J' … au cinéma hier.</p>
+  <label class="option"><input type="radio" name="q1" value="a"> a) suis allé</label>
+  <label class="option"><input type="radio" name="q1" value="b"> b) ai allé</label>
+  <label class="option"><input type="radio" name="q1" value="c"> c) ai aller</label>
+</section>
+
+<section class="page" data-page="1">
+  <h2>Aufgabe 2 – Wähle die richtige Form</h2>
+  <p class="prompt">Nous … le bus pour aller en ville.</p>
+  <label class="option"><input type="radio" name="q2" value="a"> a) sommes pris</label>
+  <label class="option"><input type="radio" name="q2" value="b"> b) avons pris</label>
+  <label class="option"><input type="radio" name="q2" value="c"> c) avons prendre</label>
+  <p class="small">Valeur: 3 points</p>
+</section>
+
+<section class="page" data-page="2">
+  <h2>Aufgabe 3 – Setze ins passé composé</h2>
+  <p class="prompt">Ballerina Cappuccina (tomber) dans la neige.</p>
+  <input type="text" id="q3" placeholder="Schreibe den ganzen Satz …" autocomplete="off">
+</section>
+
+<section class="page" data-page="3">
+  <h2>Aufgabe 4 – Übersetze ins Französische</h2>
+  <p class="prompt">„Wir haben den Bus genommen.“</p>
+  <input type="text" id="q4" placeholder="Deine Übersetzung …" autocomplete="off">
+  <div style="height:20px"></div>
+  <h2>Aufgabe 5 – Ergänze den Satz</h2>
+  <p class="prompt">Hier, ils … (regarder) un film skibidi.</p>
+  <input type="text" id="q5" placeholder="Schreibe den ganzen Satz …" autocomplete="off">
+</section>
+
+<section class="page" data-page="4">
+  <h2>Aufgabe 6 – Mini-Text</h2>
+  <p class="prompt">Schreibe zwei französische Sätze im passé composé über einen komplett verfluchten Urlaub mit Tralalero Tralala.</p>
+  <textarea id="q6" placeholder="Pendant les vacances, …"></textarea>
+</section>
+
+<section class="page" data-page="5">
+  <h2>Abgabe – Auswertung</h2>
+  <p class="prompt">Die Arbeit wird jetzt korrigiert. Bereit für den Ranglisten-Check?</p>
+  <button class="finish" id="gradeBtn">Arbeit korrigieren</button>
+  <div class="small" style="margin-top:12px">Gesamt: 18 Punkte</div>
+</section>
+
+<div class="nav">
+  <button class="secondary" id="backBtn" disabled>← Zurück</button>
+  <button class="primary" id="nextBtn">Weiter →</button>
+</div>
+<div class="result" id="result" aria-live="polite"></div>
+<footer>Bonne chance. Möge dein participe passé niemals soldaten. 🫡</footer>
+</div>
+<script>
+(() => {
+ // Fallback für Browser, die 100dvh nicht unterstützen
+ if (!CSS.supports('height: 100dvh')) {
+   document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
+ }
+ const pages=[...document.querySelectorAll('.page')];
+ const back=document.getElementById('backBtn');
+ const next=document.getElementById('nextBtn');
+ const progress=document.getElementById('progress');
+ const progressLabel=document.getElementById('progressLabel');
+ const pageLabel=document.getElementById('pageLabel');
+ const result=document.getElementById('result');
+ let current=0;
+ const totalPages=pages.length;
+ function showPage(index){
+   current=Math.max(0,Math.min(index,totalPages-1));
+   pages.forEach((p,i)=>p.classList.toggle('active',i===current));
+   back.disabled=current===0;
+   next.disabled=current===totalPages-1;
+   next.textContent=current===totalPages-1?'Letzte Seite':'Weiter →';
+   pageLabel.textContent=`Seite ${current+1} von ${totalPages}`;
+   const pct=Math.round(((current+1)/totalPages)*100);
+   progress.style.width=pct+'%';
+   progressLabel.textContent=pct+' %';
+ }
+ back.addEventListener('click',()=>showPage(current-1));
+ next.addEventListener('click',()=>showPage(current+1));
+ function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’']/g,"'").replace(/[.!?,;:]/g,'').replace(/\s+/g,' ').trim();}
+ function selected(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:'';}
+ function grade(){
+   let score=0, items=[];
+   const checks=[
+    {title:'Aufgabe 1',ok:selected('q1')==='a',points:3,answer:'Je suis allé au cinéma hier.'},
+    {title:'Aufgabe 2',ok:selected('q2')==='b',points:3,answer:'Nous avons pris le bus pour aller en ville.'}
+   ];
+   const a3=norm(document.getElementById('q3').value);
+   const q3ok=['ballerina cappuccina est tombee dans la neige','ballerina cappuccina est tombe dans la neige'].includes(a3);
+   checks.push({title:'Aufgabe 3',ok:q3ok,points:3,answer:'Ballerina Cappuccina est tombée dans la neige.'});
+   const a4=norm(document.getElementById('q4').value);
+   const q4ok=['nous avons pris le bus','on a pris le bus'].includes(a4);
+   checks.push({title:'Aufgabe 4',ok:q4ok,points:3,answer:'Nous avons pris le bus.'});
+   const a5=norm(document.getElementById('q5').value);
+   const q5ok=['hier ils ont regarde un film skibidi'].map(norm).includes(a5);
+   checks.push({title:'Aufgabe 5',ok:q5ok,points:3,answer:'Hier, ils ont regardé un film skibidi.'});
+   const a6=norm(document.getElementById('q6').value);
+   const words=a6.split(' ').filter(Boolean);
+   const hasPC=/(ai|as|a|avons|avez|ont|suis|es|est|sommes|etes|sont) (mange|joue|regarde|visite|pris|fait|vu|bu|lu|venu|alle|tombe|reste|parti|fini|dormi|eu|ete|du|sorti|arrive|rentre|descendu|monte|choisi|attendu|achete|danse|nage|perdu|gagne)/.test(a6);
+   const q6points=(words.length>=10 && hasPC)?3:(words.length>=6 && hasPC)?2:(hasPC?1:0);
+   score+=checks.reduce((s,c)=>s+(c.ok?c.points:0),0)+q6points;
+   result.style.display='block';
+   result.innerHTML=`<h2>Dein Ergebnis</h2><div class="score">${score} / 18 Punkte</div><p>${score>=16?'Absoluter W-Rizz. Grammatik-Champion. 🏆':score>=12?'Solider Grind. Tralalero nickt anerkennend. 🦈':score>=8?'Du bist noch im Trainings-Arc. Weiter üben. 💪':'Der passé composé hat gerade gecampt. Rematch incoming. 💀'}</p>`+
+   checks.map(c=>`<div class="review"><strong>${c.title}: </strong><span class="${c.ok?'good':'bad'}">${c.ok?'Richtig ✓':'Noch nicht richtig'}</span><br><span class="small">Lösung: ${c.answer}</span></div>`).join('')+
+   `<div class="review"><strong>Aufgabe 6: </strong>${q6points}/3 Punkte<br><span class="small">Bewertet werden zwei sinnvolle französische Sätze und die Verwendung des passé composé. Musterbeispiele: Tralalero est allé à la plage. Il a mangé une pizza.</span></div>`+
+   `<button class="secondary" id="retryBtn">Nochmal versuchen</button>`;
+   document.getElementById('retryBtn').addEventListener('click',()=>{
+     document.querySelectorAll('input[type=radio]').forEach(el=>el.checked=false);
+     ['q3','q4','q5','q6'].forEach(id=>document.getElementById(id).value='');
+     result.style.display='none';result.innerHTML='';showPage(0);
+   });
+   result.scrollIntoView({behavior:'smooth',block:'start'});
+ }
+ document.getElementById('gradeBtn').addEventListener('click',grade);
+ showPage(0);
+})();
+</script>
+</body>
+</html>
